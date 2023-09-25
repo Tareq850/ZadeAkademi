@@ -4,9 +4,11 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myplatform/management/addstu.dart';
 import 'package:myplatform/pages/settings.dart';
+import 'package:myplatform/pages/story.dart';
 import 'package:myplatform/student/myreq.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:myplatform/teacher/profile.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../courses.dart';
@@ -99,7 +101,7 @@ class StateHomePage extends State<HomePage>{
         child: SafeArea(
           child: Scaffold(
               appBar: AppBar(
-                title: Text("ايثار التعليمية"),
+                title: const Text("أكادمية زادة التعليمية" , style: TextStyle(color: Color(0xfffffeee)),),
                 centerTitle: true,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 actions: [
@@ -111,12 +113,25 @@ class StateHomePage extends State<HomePage>{
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationsPage()));
                     }
                   },
-                    icon: const Icon(FontAwesomeIcons.solidBell),),
+                    icon: const Icon(FontAwesomeIcons.solidBell, color: Color(0xfffffeee)),),
                   IconButton(onPressed: (){
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => Search(username)));
                   },
-                    icon: const Icon(FontAwesomeIcons.magnifyingGlass),),
+                    icon: const Icon(FontAwesomeIcons.magnifyingGlass, color: Color(0xfffffeee)),),
                 ],
+                leading: Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: Icon(
+                        Icons.menu,
+                        color: Colors.white, // تغيير لون الزر إلى الأبيض
+                      ),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                    );
+                  },
+                ),
               ),
               drawer: Drawer(
                 child: Container(
@@ -130,7 +145,7 @@ class StateHomePage extends State<HomePage>{
                           future: Prov.users.where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid).get(),
                           builder: (context, snapshot){
                             if (snapshot.hasError) {
-                              return Center(
+                              return const Center(
                                 child: Text("حدث خطأ ما. يُرجى إعادة تشغيل التطبيق."),
                               );
                             }
@@ -320,6 +335,18 @@ class StateHomePage extends State<HomePage>{
                                           Directionality(
                                             textDirection: TextDirection.rtl,
                                             child: ListTile(
+                                              title: Text("بروفايلي", style: TextStyle(color: Theme.of(context).colorScheme.primary,),),
+                                              leading: Icon(FontAwesomeIcons.gear, color: Theme.of(context).colorScheme.primary,),
+                                              onTap: (){
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                                                  return TeacherProfile(snapshot.data?.docs[i].data(), snapshot.data?.docs[i].id);
+                                                }));
+                                              },
+                                            ),
+                                          ),
+                                          Directionality(
+                                            textDirection: TextDirection.rtl,
+                                            child: ListTile(
                                               title: Text("الاعدادات", style: TextStyle(color: Theme.of(context).colorScheme.primary,),),
                                               leading: Icon(FontAwesomeIcons.gear, color: Theme.of(context).colorScheme.primary,),
                                               onTap: (){
@@ -486,7 +513,7 @@ class StateHomePage extends State<HomePage>{
       child: SafeArea(
         child: Scaffold(
             appBar: AppBar(
-              title: const Text("منصة طريق النجاح"),
+              title: const Text("أكادمية زادة التعليمية" , style: TextStyle(color: Color(0xfffffeee)),),
               centerTitle: true,
               backgroundColor: Theme.of(context).colorScheme.primary,
               actions: [
@@ -498,12 +525,25 @@ class StateHomePage extends State<HomePage>{
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotificationsPage()));
                   }
                 },
-                  icon: const Icon(FontAwesomeIcons.solidBell),),
+                  icon: const Icon(FontAwesomeIcons.solidBell, color: Color(0xfffffeee)),),
                 IconButton(onPressed: (){
                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => Search(username)));
                 },
-                  icon: const Icon(FontAwesomeIcons.magnifyingGlass),),
+                  icon: const Icon(FontAwesomeIcons.magnifyingGlass, color: Color(0xfffffeee)),),
               ],
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    icon: Icon(
+                      Icons.menu,
+                      color: Colors.white, // تغيير لون الزر إلى الأبيض
+                    ),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  );
+                },
+              ),
             ),
             drawer: Drawer(
               child: Container(
@@ -693,7 +733,9 @@ class StateHomePage extends State<HomePage>{
                                           decoration: BoxDecoration(
                                             color: Theme.of(context).colorScheme.primary,
                                           ),
-                                          currentAccountPicture: const Icon(FontAwesomeIcons.user, size: 50, color: Colors.white,),
+                                          currentAccountPicture: IconButton( icon: Icon(FontAwesomeIcons.gear), color: Colors.white, onPressed: () { Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                                            return TeacherProfile(snapshot.data?.docs[i].data(), snapshot.data?.docs[i].id);
+                                          })); },),
                                         ),
                                         Directionality(
                                           textDirection: TextDirection.rtl,
@@ -780,64 +822,107 @@ class StateHomePage extends State<HomePage>{
                 onRefresh: () {
                   return Navigator.of(context).pushReplacementNamed('home');
                 },
-                child: StreamBuilder(
-                  stream: Prov.course.orderBy('status', descending: true).snapshots(includeMetadataChanges: true),
-                  builder: (context, snapshot) {
-                    if (!snapshot.hasData) {
-                      return Center(child: Text("لا يوجد بيانات لعرضها"));
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.data?.docs.isEmpty ?? true) {
-                      return const Center(child: Text("لا يوجد بيانات لعرضها"));
-                    }
-                    if (snapshot.hasError) {
-                      AwesomeDialog(
-                        context: context,
-                        width: 400,
-                        title: "خطأ",
-                        desc: 'حصل خطأ ما أثناء جلب البيانات',
-                        dialogType: DialogType.error,
-                        animType: AnimType.rightSlide,
-                        autoHide: const Duration(seconds: 10),
-                      ).show();
-                    }
-                    return ListView.builder(
-                      itemCount: snapshot.data?.docs.length,
-                      itemBuilder: (context, i) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                              return Viewss(snapshot.data?.docs[i].data(), snapshot.data?.docs[i].id, username);
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                        child: InkWell(
+                          onTap: (){
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                              return const Social();
                             }));
                           },
                           child: Container(
+                            width: double.infinity,
                             margin: const EdgeInsets.all(10),
-                            width: 200,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Color.fromARGB(500, _random.nextInt(100),
-                                  _random.nextInt(100), _random.nextInt(120)),
-                            ),
-                            child: Wrap(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.all(10),
-                                  child: Image.network('${snapshot.data?.docs[i]['imgurl']?? ""}',fit: BoxFit.cover, width: double.maxFinite, height: 150,),
-                                ),
-                                ListTile(
-                                  title: Text("اسم الدورة : ${snapshot.data?.docs[i]['course_name']?? ""} ",style: const TextStyle(color: Colors.white, fontSize: 18), ),
-                                  subtitle: Text("عدد الساعات : ${snapshot.data?.docs[i]['houres']?? ""}",style: const TextStyle(color: Colors.white, fontSize: 14),),
-                                  trailing: Text(" السعر:  ${snapshot.data?.docs[i]['price']?? ""}",style: const TextStyle(color: Colors.white, fontSize: 18),),
+                              color: Theme.of(context).primaryColor, // لون الخلفية
+                              borderRadius: BorderRadius.circular(10), // حدود مستديرة
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5), // لون الظل
+                                  spreadRadius: 5, // نطاق الانتشار الأفقي
+                                  blurRadius: 7, // قوة الضبابة
+                                  offset: const Offset(0, 3), // اتجاه الظل
                                 ),
                               ],
                             ),
+                            padding: const EdgeInsets.all(20), // هامش داخلي
+                            child: const Center(
+                              child: Text(
+                                'آخر الأخبار',
+                                style: TextStyle(
+                                  color: Colors.white, // لون النص
+                                  fontSize: 20, // حجم النص
+                                ),
+                              ),
+                            ),
                           ),
-                        );
-                      },
-                    );
-                  },
+                        )
+                    ),
+                    Expanded(
+                      flex: 5,
+                      child: StreamBuilder(
+                        stream: Prov.course.orderBy('status', descending: true).snapshots(includeMetadataChanges: true),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(child: Text("لا يوجد بيانات لعرضها"));
+                          }
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.data?.docs.isEmpty ?? true) {
+                            return const Center(child: Text("لا يوجد بيانات لعرضها"));
+                          }
+                          if (snapshot.hasError) {
+                            AwesomeDialog(
+                              context: context,
+                              width: 400,
+                              title: "خطأ",
+                              desc: 'حصل خطأ ما أثناء جلب البيانات',
+                              dialogType: DialogType.error,
+                              animType: AnimType.rightSlide,
+                              autoHide: const Duration(seconds: 10),
+                            ).show();
+                          }
+                          return ListView.builder(
+                            itemCount: snapshot.data?.docs.length,
+                            itemBuilder: (context, i) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                                    return Viewss(snapshot.data?.docs[i].data(), snapshot.data?.docs[i].id, username);
+                                  }));
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.all(10),
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color.fromARGB(500, _random.nextInt(100),
+                                        _random.nextInt(100), _random.nextInt(120)),
+                                  ),
+                                  child: Wrap(
+                                    children: [
+                                      Container(
+                                        margin: const EdgeInsets.all(10),
+                                        child: Image.network('${snapshot.data?.docs[i]['imgurl']?? ""}',fit: BoxFit.cover, width: double.maxFinite, height: 150,),
+                                      ),
+                                      ListTile(
+                                        title: Text("اسم الدورة : ${snapshot.data?.docs[i]['course_name']?? ""} ",style: const TextStyle(color: Colors.white, fontSize: 18), ),
+                                        subtitle: Text("عدد الساعات : ${snapshot.data?.docs[i]['houres']?? ""}",style: const TextStyle(color: Colors.white, fontSize: 14),),
+                                        trailing: Text(" السعر:  ${snapshot.data?.docs[i]['price']?? ""}",style: const TextStyle(color: Colors.white, fontSize: 18),),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ),
             )

@@ -38,7 +38,7 @@ class TeatcherState extends State<Teatcher>{
           ),
 
           body: FutureBuilder(
-              future: Prov.users.get(),
+              future: Prov.users.where('type', isEqualTo: 'معلم').get(),
               builder: (context, snapshot){
                 if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());}
@@ -72,7 +72,7 @@ class TeatcherState extends State<Teatcher>{
                               child: ListTile(
                                 shape: Border.all(width: 1, color: Theme.of(context).colorScheme.primary,),
                                 title: Text(" اسم الاستاذ : ${snapshot.data?.docs[index]['name']}",style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
-                                leading: Icon(Icons.accessibility, color: Theme.of(context).colorScheme.primary,),
+                                leading: CircleAvatar(child: Image.network("${snapshot.data?.docs[index]['imgurl']}", width: double.infinity,height: 250, fit: BoxFit.cover,)),
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(builder: (context){
                                     return Onetech(snapshot.data?.docs[index].data(), snapshot.data?.docs[index].id);

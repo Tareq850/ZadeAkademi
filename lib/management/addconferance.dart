@@ -61,6 +61,7 @@ class AddConferanceState extends State<AddConferance> {
   }
 
   GlobalKey<FormState> forms = GlobalKey<FormState>();
+  String con_url = "";
   String te_name = "";
   String c_name = "";
   var startday ;
@@ -337,6 +338,31 @@ class AddConferanceState extends State<AddConferance> {
                                     ],
                                   ),
                                 ),
+                                SizedBox(height: 20,),
+                                Column(
+                                  children: [
+                                    Text(" رابط الجلسة : ", style: TextStyle(color: Theme.of(context).colorScheme.primary,),),
+                                    const SizedBox(height: 10,),
+                                    TextFormField(
+                                      style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                      decoration: const InputDecoration(
+                                        labelText: 'رابط الجلسة',
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'يرجى إدخال رابط';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value){
+                                        con_url = value;
+                                      },
+                                      onSaved: (value){
+                                        con_url = value!;
+                                      },
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -346,7 +372,7 @@ class AddConferanceState extends State<AddConferance> {
                             height: 50,
                             child: MaterialButton(
                               onPressed: () async {
-                                if (c_name != "" && te_name != "" ) {
+                                if (c_name != "" && te_name != "" && con_url != "") {
                                   var data = forms.currentState;
                                   if (data!.validate()) {
                                     data.save();
@@ -387,7 +413,7 @@ class AddConferanceState extends State<AddConferance> {
                                     var courseID = querySnapshot.docs.first.id;
                                     await Prov.add_Confecance(
                                         c_name, te_name, _startTime.format(context), _endTime.format(context),
-                                        startday);
+                                        startday, con_url);
                                     Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(builder: (context) {
                                           return Conferances(widget.userinfo, widget.id);

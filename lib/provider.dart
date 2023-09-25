@@ -20,6 +20,7 @@ class AuthP extends ChangeNotifier{
   CollectionReference student = FirebaseFirestore.instance.collection('student');
   CollectionReference conferance = FirebaseFirestore.instance.collection('conferance');
   CollectionReference exam = FirebaseFirestore.instance.collection('exam');
+  CollectionReference social = FirebaseFirestore.instance.collection('social');
   final CollectionReference notificationsCollection = FirebaseFirestore.instance.collection('Notifications');
   late FirebaseAuth _auth;
   late User _user;
@@ -30,13 +31,13 @@ class AuthP extends ChangeNotifier{
   String ver = "راجع بريدك لاثبات ملكية الحساب";
   bool isEmailVerified = true;
   bool _isManager = false;
+  bool manager = false;
   bool get isManager => _isManager;
   void setIsManager(bool value) {
     _isManager = value;
   }
   AuthP(){
     _auth = FirebaseAuth.instance;
-    // var user = FirebaseAuth.instance.currentUser;
     _auth.authStateChanges().listen((User? user) {
       if(user == null){
         _authStatus = AuthStatus.unAuthenticated;
@@ -51,7 +52,6 @@ class AuthP extends ChangeNotifier{
   User get user => _user;
 
   Future<bool> login(String email, String Password) async{
-    //messaging.getToken();
     bool x = false;
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
@@ -237,7 +237,7 @@ class AuthP extends ChangeNotifier{
     }
     notifyListeners();
   }
-  updateStudent(id, birthDate, phone, country, String gender) async {
+  updateStudent(id, birthDate, phone, country, String gender, city, address, dadPhone, student_status, schoolName) async {
     await messaging.getToken().then((value) {
       tok = value!;
     });
@@ -249,11 +249,14 @@ class AuthP extends ChangeNotifier{
           'gender'    : gender,
           'token'     : tok,
           'userId': _auth.currentUser!.uid,
-          'emailVerified' : ver
+          'city' : city,
+          'address' : address,
+          'dadPhone' : dadPhone,
+          'student_status' : student_status,
+          'schoolName' : schoolName
         });
     notifyListeners();
   }
-
   addStudents(String name ,String email, String type) async {
     await users.add({
       'email' : email,
@@ -269,7 +272,7 @@ class AuthP extends ChangeNotifier{
     });
     notifyListeners();
   }
-  regesterInCourse(id,String userId, name, email, birthDate, phone, country, String gender, course_name) async {
+  regesterInCourse(id,String userId, name, email, birthDate, phone, country, String gender, course_name, city, address, dadPhone, student_status, schoolName) async {
     await student.add({
       'userId' : userId,
       'name' : name,
@@ -280,7 +283,30 @@ class AuthP extends ChangeNotifier{
       'gender': gender,
       'status': 'بانتظار الدفع',
       'course_name': course_name,
-      'emailVerified' : ver
+      'city' : city,
+      'address' : address,
+      'dadPhone' : dadPhone,
+      'student_status' : student_status,
+      'schoolName' : schoolName
+    });
+    notifyListeners();
+  }
+
+  techer_profile(id, date, phone, country, gender, city, address, imgurl, specialization) async {
+    await messaging.getToken().then((value) {
+      tok = value!;
+    });
+    await users.doc(id).update({
+      'birthDate' : date,
+      'phone'     : phone,
+      'country'   : country,
+      'gender'    : gender,
+      'token'     : tok,
+      'userId': _auth.currentUser!.uid,
+      'city' : city,
+      'address' : address,
+      'imgurl' : imgurl,
+      'specialization' : specialization,
     });
     notifyListeners();
   }
@@ -310,25 +336,34 @@ class AuthP extends ChangeNotifier{
     });
     notifyListeners();
   }
-  add_Confecance(String c_name, String te_name, start, end, date) async {
+  add_Confecance(String c_name, String te_name, start, end, date, con_url) async {
     _authStatus = AuthStatus.authenticated;
     await conferance.add({
       'course_name' : c_name,
       'teatcher_name' : te_name,
       'start' : start,
       'end': end,
-      'date': date
+      'date': date,
+      'con_url' : con_url
     });
     notifyListeners();
   }
-  update_Confecance(id ,String c_name, String te_name, start, end, date) async {
+  update_Social(social_url) async {
+    _authStatus = AuthStatus.authenticated;
+    await social.doc("6HHmlN3dfnLfunplGqsF").update({
+      'social_url' : social_url,
+    });
+    notifyListeners();
+  }
+  update_Confecance(id ,String c_name, String te_name, start, end, date, con_url) async {
     _authStatus = AuthStatus.authenticated;
     await conferance.doc(id).update({
       'course_name' : c_name,
       'teatcher_name' : te_name,
       'start' : start,
       'end': end,
-      'date': date
+      'date': date,
+      'con_url' : con_url
     });
     notifyListeners();
   }
@@ -365,6 +400,20 @@ class AuthP extends ChangeNotifier{
     final studentsToDelete = await student.where("course_name", isEqualTo: course).get();
     for (final studentDoc in studentsToDelete.docs) {
       await studentDoc.reference.delete();
+    }
+    notifyListeners();
+  }
+  Future user_Type() async{
+    var snapshot = await users.where('email', isEqualTo: user.email).get();
+    if (snapshot.docs.isNotEmpty){
+      var doc = snapshot.docs[0];
+      var type = doc['type'];
+      if (type == 'مدير'){
+        manager = true;
+      }
+      else {
+        manager = false;
+      }
     }
     notifyListeners();
   }

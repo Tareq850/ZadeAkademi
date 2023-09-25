@@ -22,6 +22,7 @@ class EditConferance extends StatefulWidget{
 }
 
 class EditConferanceState extends State<EditConferance> {
+  String con_url = "";
   String te_name = "";
   String c_name = "";
   String title = "";
@@ -250,6 +251,31 @@ class EditConferanceState extends State<EditConferance> {
                                 ],
                               ),
                             ),
+                            SizedBox(height: 20,),
+                            Column(
+                              children: [
+                                Text(" رابط الجلسة : ", style: TextStyle(color: Theme.of(context).colorScheme.primary,),),
+                                const SizedBox(height: 10,),
+                                TextFormField(
+                                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                                  decoration: InputDecoration(
+                                    labelText: 'رابط الجلسة',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'يرجى إدخال رابط';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value){
+                                    con_url = value;
+                                  },
+                                  onSaved: (value){
+                                    con_url = value!;
+                                  },
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -281,7 +307,7 @@ class EditConferanceState extends State<EditConferance> {
                                   },
                                 );
                                 data.save();
-                                Prov.update_Confecance(widget.id, c_name, te_name, _startTime.format(context), _endTime.format(context), startday);
+                                Prov.update_Confecance(widget.id, c_name, te_name, _startTime.format(context), _endTime.format(context), startday, con_url);
                                 QuerySnapshot querySnapshot = await FirebaseFirestore.instance
                                     .collection('courses')
                                     .where('course_name', isEqualTo: c_name)

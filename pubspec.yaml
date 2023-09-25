@@ -67,9 +67,7 @@ dependencies:
   ed_screen_recorder: ^0.0.13
   easy_pdf_viewer: ^1.0.7
   flutter_slidable: ^3.0.0
-  #zego_uikit_prebuilt_video_conference: ^2.4.0
-  #flutter_overlay_window: ^0.4.3
-
+  story: ^1.1.0
 dependency_overrides:
   package_info_plus: any
 

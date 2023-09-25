@@ -55,6 +55,7 @@ class OnetechState extends State<Onetech>{
                               margin: const EdgeInsets.all(10),
                               child: Column(
                                 children: [
+                                  CircleAvatar(child: Image.network("${widget.info['imgurl']}", width: double.infinity,height: 250, fit: BoxFit.cover,)),
                                   ListTile(
                                     title: Text(" اسم الأستاذ: ${widget.info['name']}",style: const TextStyle(color : Colors.black87, fontSize: 18)),
                                     leading: const Icon(FontAwesomeIcons.school),
@@ -77,6 +78,10 @@ class OnetechState extends State<Onetech>{
                                   ),
                                   ListTile(
                                     title: Text(" الهاتف: ${widget.info['phone']}",style: const TextStyle(color : Colors.black87, fontSize: 18),),
+                                    leading: const Icon(FontAwesomeIcons.phone),
+                                  ),
+                                  ListTile(
+                                    title: Text(" الاختصاص: ${widget.info['specialization']}",style: const TextStyle(color : Colors.black87, fontSize: 18),),
                                     leading: const Icon(FontAwesomeIcons.phone),
                                   ),
                                   ListTile(

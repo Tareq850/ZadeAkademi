@@ -17,7 +17,11 @@ class Check extends StatefulWidget {
   final reg;
   final id;
   final username;
-
+  final city;
+  final address;
+  final dadPhone;
+  final student_status;
+  final schoolName;
   Check(
       this.country,
       this.phone,
@@ -26,6 +30,11 @@ class Check extends StatefulWidget {
       this.reg,
       this.id,
       this.username,
+      this.city,
+      this.address,
+      this.dadPhone,
+      this.student_status,
+      this.schoolName
       );
 
   @override
@@ -132,10 +141,19 @@ class CheckState extends State<Check> {
                             title: Text(" الدولة :  ${widget.country}", style: TextStyle(color: Colors.black87),),
                           ),
                           ListTile(
+                            title: Text(" الولاية :  ${widget.city}", style: TextStyle(color: Colors.black87),),
+                          ),
+                          ListTile(
+                            title: Text(" المدينة :  ${widget.address}", style: TextStyle(color: Colors.black87),),
+                          ),
+                          ListTile(
                             title: Text(" الجنس :  ${widget.gender}", style: TextStyle(color: Colors.black87)),
                           ),
                           ListTile(
                             title: Text(" الهاتف :  ${widget.phone}", style: TextStyle(color: Colors.black87)),
+                          ),
+                          ListTile(
+                            title: Text(" ولي الأمر :  ${widget.dadPhone}", style: TextStyle(color: Colors.black87)),
                           ),
                           ListTile(
                             title: Text(" تاريخ الميلاد :  ${widget.birthdate}", style: TextStyle(color: Colors.black87)),
@@ -159,22 +177,32 @@ class CheckState extends State<Check> {
                                       });
                                     });
                                     await Prov.updateStudent(
-                                      snapshot.data?.docs[i].id,
-                                      widget.birthdate,
-                                      widget.phone.toString(),
-                                      widget.country,
-                                      widget.gender,
+                                        snapshot.data?.docs[i].id,
+                                        widget.birthdate,
+                                        widget.phone.toString(),
+                                        widget.country,
+                                        widget.gender,
+                                        widget.city,
+                                        widget.address,
+                                        widget.dadPhone,
+                                        widget.student_status,
+                                        widget.schoolName
                                     );
                                     await Prov.regesterInCourse(
-                                      widget.id,
-                                      Prov.user.uid,
-                                      name,
-                                      Prov.user.email,
-                                      widget.birthdate,
-                                      widget.phone,
-                                      widget.country,
-                                      widget.gender,
-                                      widget.reg['course_name'].toString(),
+                                        widget.id,
+                                        Prov.user.uid,
+                                        name,
+                                        Prov.user.email,
+                                        widget.birthdate,
+                                        widget.phone,
+                                        widget.country,
+                                        widget.gender,
+                                        widget.reg['course_name'].toString(),
+                                        widget.city,
+                                        widget.address,
+                                        widget.dadPhone,
+                                        widget.student_status,
+                                        widget.schoolName
                                     );
                                     await openWhatsApp(phoneNumber: '+905058908442', message: 'ISAR');
                                   },
@@ -194,22 +222,32 @@ class CheckState extends State<Check> {
                                       });
                                     });
                                     await Prov.updateStudent(
-                                      snapshot.data?.docs[i].id,
-                                      widget.birthdate,
-                                      widget.phone.toString(),
-                                      widget.country,
-                                      widget.gender,
+                                        snapshot.data?.docs[i].id,
+                                        widget.birthdate,
+                                        widget.phone.toString(),
+                                        widget.country,
+                                        widget.gender,
+                                        widget.city,
+                                        widget.address,
+                                        widget.dadPhone,
+                                        widget.student_status,
+                                        widget.schoolName
                                     );
                                     await Prov.regesterInCourse(
-                                      widget.id,
-                                      Prov.user.uid,
-                                      name,
-                                      Prov.user.email,
-                                      widget.birthdate,
-                                      widget.phone,
-                                      widget.country,
-                                      widget.gender,
-                                      widget.reg['course_name'].toString(),
+                                        widget.id,
+                                        Prov.user.uid,
+                                        name,
+                                        Prov.user.email,
+                                        widget.birthdate,
+                                        widget.phone,
+                                        widget.country,
+                                        widget.gender,
+                                        widget.reg['course_name'].toString(),
+                                        widget.city,
+                                        widget.address,
+                                        widget.dadPhone,
+                                        widget.student_status,
+                                        widget.schoolName
                                     );
                                   },
                                 ).show();

@@ -24,6 +24,11 @@ class RegesterState extends State<Regester>{
   String? state ;
   var phone ;
   var date;
+  var dadPhone;
+  String city = "";
+  String address = "";
+  String student_status = "";
+  String schoolName = "";
   GlobalKey<FormState> forms = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -58,15 +63,19 @@ class RegesterState extends State<Regester>{
                           country = Country;
                         },
                         //currentCountry: country,
-                        onStateChanged:(State) {},
-                        onCityChanged:(City) {},
+                        onStateChanged:(State) {
+                          city = State!;
+                        },
+                        onCityChanged:(City) {
+                          address = City!;
+                        },
                       ),
                       const SizedBox(height: 20,),
                       Directionality(
                         textDirection: TextDirection.ltr,
                         child: IntlPhoneField(
                           decoration: const InputDecoration(
-                            labelText: 'رقم الهاتف',
+                            labelText: "موبايل الطالب",
                             border: OutlineInputBorder(
                                 borderSide: BorderSide(),
                                 borderRadius: BorderRadius.all(Radius.circular(5))
@@ -81,6 +90,119 @@ class RegesterState extends State<Regester>{
                             phone = val!.number;
                           },
                         ),
+                      ),
+                      const SizedBox(height: 20,),
+                      Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: IntlPhoneField(
+                          decoration: const InputDecoration(
+                            labelText: 'موبايل ولي الأمر',
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(),
+                                borderRadius: BorderRadius.all(Radius.circular(5))
+                            ),
+                          ),
+                          style: TextStyle(color: Theme.of(context).colorScheme.secondary,),
+                          initialCountryCode: "TR",
+                          onChanged: (value) {
+                            dadPhone = value.number ;
+                          },
+                          onSaved: (val){
+                            dadPhone = val!.number;
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20,),
+                      Directionality(textDirection:
+                      TextDirection.rtl,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            setState(() {
+                              schoolName = value;
+                            });
+                          },
+                          onSaved: (val) {
+                            schoolName = val!;
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "يرجى كتابة اسم المدرسة";
+                            }
+                            return null;
+                          },
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            labelText: "اسم المدرسة",
+                            labelStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            focusColor: Theme.of(context).primaryColor,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1.0,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1.0,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),),
+                            suffixText: "${student_status.length}",
+                          ),),
+                      ),
+                      const SizedBox(height: 20,),
+                      Directionality(textDirection:
+                        TextDirection.rtl,
+                        child: TextFormField(
+                          onChanged: (value) {
+                            setState(() {
+                              student_status = value;
+                            });
+                          },
+                          onSaved: (val) {
+                            student_status = val!;
+                          },
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "يرجى كتابة المرحلة الدراسية";
+                            }
+                            return null;
+                          },
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            labelText: "المرحلة الدراسة",
+                            labelStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                            focusColor: Theme.of(context).primaryColor,
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1.0,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1.0,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),),
+                            suffixText: "${student_status.length}",
+                          ),),
                       ),
                       const SizedBox(height: 20,),
                       DateTimeFormField(
@@ -162,7 +284,7 @@ class RegesterState extends State<Regester>{
                             );
                             data.save();
                             Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                              return Check(country, phone, date, gender, widget.reg, widget.id, widget.username,);
+                              return Check(country, phone, date, gender, widget.reg, widget.id, widget.username,city, address, dadPhone, student_status, schoolName);
                             }));
                             var bar = SnackBar(content: Text("تم التسجيل بالدورة، يرجى تأكيد الطلب"), backgroundColor: Theme.of(context).colorScheme.primary,);
                             ScaffoldMessenger.of(context).showSnackBar(bar);

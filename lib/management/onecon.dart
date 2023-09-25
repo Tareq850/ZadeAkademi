@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:myplatform/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../meet.dart';
 import 'editeconferance.dart'; // استبدال هذا باستيراد الملف الصحيح
@@ -22,6 +23,12 @@ class OneCon extends StatefulWidget {
 }
 
 class OneConState extends State<OneCon> {
+  openCon(con_url) async{
+    var conURl = Uri.parse(con_url);
+    print("s22s");
+    await launchUrl(conURl);
+    print("ssss");
+  }
   @override
   Widget build(BuildContext context) {
     final data = widget.info['date']as Timestamp;
@@ -132,14 +139,7 @@ class OneConState extends State<OneCon> {
             ),
             leading: Icon(FontAwesomeIcons.phone),
             onTap: () {
-              /*Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return VideoConferencePage(
-                  widget.info,
-                  widget.user,
-                  widget.userid,
-                  widget.id,
-                );
-              }));*/
+              openCon(widget.info['con_url']);
             },
           ),
           ListTile(
@@ -241,14 +241,7 @@ class OneConState extends State<OneCon> {
             ),
             leading: Icon(FontAwesomeIcons.phone),
             onTap: () {
-              /*Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                return VideoConferencePage(
-                  widget.info,
-                  widget.user,
-                  widget.userid,
-                  widget.id,
-                );
-              }));*/
+              openCon(widget.info['con_url']);
             },
           ),
         ],

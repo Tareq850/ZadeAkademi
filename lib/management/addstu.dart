@@ -309,7 +309,7 @@ class AddStudentState extends State<AddStudent>{
                                     context: context,
                                     builder: (BuildContext dialogContext) {
                                       return AlertDialog(
-                                        title: Center(child: Text('انتظر قليلاً..')),
+                                        title: const Center(child: Text('انتظر قليلاً..')),
                                         content: Container(
                                           height: 200,
                                           width: 200,

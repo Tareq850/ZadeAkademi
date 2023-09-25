@@ -44,10 +44,10 @@ class MyApp extends StatelessWidget {
         'sign': (context) => SignUpPage(),
       },
       debugShowCheckedModeBanner: false,
-      title: 'طريق النجاح',
+      title: 'أكادمية زادة التعليمية',
       theme: ThemeData(
         useMaterial3: true,
-        primaryColor: const Color(0xff01953D),
+        primaryColor: const Color(0xffC5123A),
         textTheme: const TextTheme(
           bodyLarge: TextStyle(
               color: Color(0xffffffff),
@@ -61,13 +61,13 @@ class MyApp extends StatelessWidget {
         colorScheme: const ColorScheme(
           background: Color(0xfff6f9ff),
           brightness: Brightness.light,
-          primary: Color(0xff01953D),
-          onPrimary: Color(0xff0f9b48),
-          secondary: Color(0xff2E2777),
-          onSecondary: Color(0xff3b3391),
+          primary: Color(0xffC5123A),
+          onPrimary: Color(0xffC5123A),
+          secondary: Color(0xff000111),
+          onSecondary: Color(0xffffffff),
           error: Color(0xffff0000),
           onError: Color(0xfff80909),
-          onBackground: Color(0xff01953D),
+          onBackground: Color(0xffC5123A),
           surface: Color(0xffffffff),
           onSurface: Color(0xff000111),),
       ),
