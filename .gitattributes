@@ -1,3 +1,2 @@
-path/to/firebase-tools-instant-win.exe filter=lfs diff=lfs merge=lfs -text
 C:/Users/UX/StudioProjects/myplatform/firebase-tools-instant-win.exe filter=lfs diff=lfs merge=lfs -text
 firebase-tools-instant-win.exe filter=lfs diff=lfs merge=lfs -text
