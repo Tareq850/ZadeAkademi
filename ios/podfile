@@ -1,5 +1,5 @@
 target 'Runner' do
   use_frameworks!
-  pod 'Firebase/Firestore'
+  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git'
   pod 'PhoneNumberKit/PhoneNumberKitCore', :git => 'https://github.com/marmelroy/PhoneNumberKit', :tag => '3.5.10'
 end
