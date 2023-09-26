@@ -1,4 +1,3 @@
 target 'Runner' do
   pod 'PhoneNumberKit/PhoneNumberKitCore', :git => 'https://github.com/marmelroy/PhoneNumberKit', :tag => '3.5.10'
-  ...
 end

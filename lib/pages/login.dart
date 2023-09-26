@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 //margin: const EdgeInsets.only(top: 40, bottom: 40),
                 //alignment: Alignment.topLeft,
                 height: 700,
-                child: Lottie.asset('images/login.json'),
+                child: Lottie.asset('images/lnimation.json'),
               ),
             ),
           ],
@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                   margin: const EdgeInsets.only(top: 25, bottom: 25),
                   alignment: Alignment.topCenter,
                   height: 300,
-                  child: Lottie.asset('images/login.json'),
+                  child: Lottie.asset('images/lnimation.json'),
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 25.0),

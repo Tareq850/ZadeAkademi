@@ -107,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 constraints: BoxConstraints(maxWidth: 600),
                 alignment: Alignment.topCenter,
                 height: 700,
-                child: Lottie.asset('images/animation_ll7rkrmr.json'),
+                child: Lottie.asset('images/animation.json'),
               ),
             ),
           ],
@@ -123,7 +123,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Container(
               alignment: Alignment.topCenter,
               height: 300,
-              child: Lottie.asset('images/animation_ll7rkrmr.json'),
+              child: Lottie.asset('images/animation.json'),
             ),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 25.0),
