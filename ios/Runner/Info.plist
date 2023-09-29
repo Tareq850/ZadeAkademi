@@ -2,23 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>sms</string>
-        <string>tel</string>
-    </array>
-    <key>NSPhotoLibraryUsageDescription</key>
-	<string>Save video in gallery</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Save audio in video</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-	<string>Save video in gallery</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Save audio in video</string>
-    <key>NSCameraUsageDescription</key>
-    <string>We require camera access to connect</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>We require microphone access to connect</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
